@@ -1,12 +1,12 @@
 {
   "sources": [
     {
-      "name": "example-docs",
-      "repo": "your-org/source-repo",
+      "name": "onix-config",
+      "repo": "beckn/beckn-onix",
       "ref": "main",
-      "source_path": "docs",
-      "destination_path": "vendor/example-docs",
-      "delete_extra_files": true
+      "source_path": "./CONFIG.md",
+      "destination_path": "docs/beckn-onix/CONFIG.md",
+      "delete_extra_files": false
     }
   ]
 }
