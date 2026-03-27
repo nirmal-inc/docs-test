@@ -7,6 +7,22 @@
       "source_path": "./CONFIG.md",
       "destination_path": "docs/beckn-onix/CONFIG.md",
       "delete_extra_files": false
+    },
+    {
+      "name": "onix-config",
+      "repo": "beckn/beckn-onix",
+      "ref": "main",
+      "source_path": "./SETUP.md",
+      "destination_path": "docs/beckn-onix/SETUP.md",
+      "delete_extra_files": false
+    },
+    {
+      "name": "onix-config",
+      "repo": "beckn/protocol-specifications-v2",
+      "ref": "main",
+      "source_path": "./docs",
+      "destination_path": "docs/protocol/SETUP.md",
+      "delete_extra_files": false
     }
   ]
 }
