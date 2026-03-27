@@ -32,6 +32,13 @@ trap 'rm -rf "$workdir"' EXIT
 
 selected_count=0
 
+normalize_repo_path() {
+  local input="$1"
+  input="${input#./}"
+  input="${input#/}"
+  printf '%s\n' "$input"
+}
+
 for index in $(seq 0 $((source_count - 1))); do
   name="$(jq -r ".sources[$index].name // \"\"" "$config_path")"
   repo="$(jq -r ".sources[$index].repo // \"\"" "$config_path")"
@@ -39,6 +46,9 @@ for index in $(seq 0 $((source_count - 1))); do
   source_path="$(jq -r ".sources[$index].source_path // \"\"" "$config_path")"
   destination_path="$(jq -r ".sources[$index].destination_path // \"\"" "$config_path")"
   delete_extra_files="$(jq -r ".sources[$index].delete_extra_files // false" "$config_path")"
+
+  source_path="$(normalize_repo_path "$source_path")"
+  destination_path="$(normalize_repo_path "$destination_path")"
 
   if [[ -n "$source_name_filter" && "$name" != "$source_name_filter" ]]; then
     continue
