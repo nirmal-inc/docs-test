@@ -1,0 +1,12 @@
+{
+  "sources": [
+    {
+      "name": "example-docs",
+      "repo": "your-org/source-repo",
+      "ref": "main",
+      "source_path": "docs",
+      "destination_path": "vendor/example-docs",
+      "delete_extra_files": true
+    }
+  ]
+}
