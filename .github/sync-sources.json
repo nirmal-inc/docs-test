@@ -21,8 +21,8 @@
       "repo": "beckn/protocol-specifications-v2",
       "ref": "main",
       "source_path": "./docs",
-      "destination_path": "docs/protocol/SETUP.md",
-      "delete_extra_files": false
+      "destination_path": "docs/protocol/",
+      "delete_extra_files": true
     }
   ]
 }
