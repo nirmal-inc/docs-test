@@ -9,7 +9,7 @@
       "delete_extra_files": false
     },
     {
-      "name": "onix-config",
+      "name": "onix-setup",
       "repo": "beckn/beckn-onix",
       "ref": "main",
       "source_path": "./SETUP.md",
@@ -21,15 +21,15 @@
       "repo": "beckn/starter-kit",
       "ref": "main",
       "source_path": "./README.md",
-      "destination_path": "docs/getting-started/README.md",
+      "destination_path": "docs/getting-started/getting-started-with-beckn.md",
       "delete_extra_files": false
     },
     {
-      "name": "onix-config",
-      "repo": "beckn/protocol-specifications-v2",
+      "name": "deg",
+      "repo": "beckn/DEG",
       "ref": "main",
       "source_path": "./docs",
-      "destination_path": "docs/protocol/",
+      "destination_path": "docs/deg/",
       "delete_extra_files": true
     }
   ]

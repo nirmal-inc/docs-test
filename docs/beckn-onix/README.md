@@ -1,2 +1,0 @@
-# beckn-onix
-
