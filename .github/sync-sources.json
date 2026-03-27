@@ -17,6 +17,14 @@
       "delete_extra_files": false
     },
     {
+      "name": "starter-kit",
+      "repo": "beckn/starter-kit",
+      "ref": "main",
+      "source_path": "./README.md",
+      "destination_path": "docs/getting-started/README.md",
+      "delete_extra_files": false
+    },
+    {
       "name": "onix-config",
       "repo": "beckn/protocol-specifications-v2",
       "ref": "main",
