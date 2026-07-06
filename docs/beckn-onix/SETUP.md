@@ -6,22 +6,22 @@
 
 This document covers only how to get ONIX running. Three companion documents:
 
-- **[README.md](README.md)** — what ONIX is, its architecture, plugin inventory, and API surface
-- **[CONFIG.md](CONFIG.md)** — every configuration parameter, module/handler/step/plugin concepts, and deployment scenarios
-- **This document** — how to run, build, and deploy ONIX
+* [**README.md**](https://github.com/nirmal-inc/docs-test/blob/main/docs/beckn-onix/README.md) — what ONIX is, its architecture, plugin inventory, and API surface
+* [**CONFIG.md**](CONFIG.md) — every configuration parameter, module/handler/step/plugin concepts, and deployment scenarios
+* **This document** — how to run, build, and deploy ONIX
 
----
+***
 
 ## Table of Contents
 
-1. [The Fastest Path: NFH Fabric Starter Kit](#1-the-fastest-path-nfh-fabric-starter-kit)
-2. [Running ONIX with Docker](#2-running-onix-with-docker)
-3. [Building Your Own ONIX Image](#3-building-your-own-onix-image)
-4. [Production Setup](#4-production-setup)
-5. [Observability](#5-observability)
-6. [Troubleshooting](#6-troubleshooting)
+1. [The Fastest Path: NFH Fabric Starter Kit](SETUP.md#1-the-fastest-path-nfh-fabric-starter-kit)
+2. [Running ONIX with Docker](SETUP.md#2-running-onix-with-docker)
+3. [Building Your Own ONIX Image](SETUP.md#3-building-your-own-onix-image)
+4. [Production Setup](SETUP.md#4-production-setup)
+5. [Observability](SETUP.md#5-observability)
+6. [Troubleshooting](SETUP.md#6-troubleshooting)
 
----
+***
 
 ## 1. The Fastest Path: NFH Fabric Starter Kit
 
@@ -29,7 +29,7 @@ The [Beckn Starter Kit](https://github.com/beckn/starter-kit) provisions a compl
 
 Follow the starter kit's own README for setup instructions. Everything in this document targets operators who need to go beyond the starter kit — custom deployment topology, production hardening, or custom plugins.
 
----
+***
 
 ## 2. Running ONIX with Docker
 
@@ -66,15 +66,15 @@ services:
 
 **Environment variables** — ONIX reads very few. Most configuration lives in the YAML config file mounted above, not in the environment:
 
-| Variable | When required | Example |
-|---|---|---|
-| `REDIS_ADDR` | `cache` plugin is configured | `redis:6379` |
-| `VAULT_ADDR` | `keymanager` plugin is configured | `http://vault:8200` |
-| `VAULT_ROLE_ID` | `keymanager` with AppRole auth | `<role-id>` |
-| `VAULT_SECRET_ID` | `keymanager` with AppRole auth | `<secret-id>` |
-| `RABBITMQ_ADDR` | `publisher` plugin is configured | `rabbitmq:5672` |
-| `RABBITMQ_USER` | `publisher` plugin is configured | `admin` |
-| `RABBITMQ_PASS` | `publisher` plugin is configured | `admin123` |
+| Variable          | When required                     | Example             |
+| ----------------- | --------------------------------- | ------------------- |
+| `REDIS_ADDR`      | `cache` plugin is configured      | `redis:6379`        |
+| `VAULT_ADDR`      | `keymanager` plugin is configured | `http://vault:8200` |
+| `VAULT_ROLE_ID`   | `keymanager` with AppRole auth    | `<role-id>`         |
+| `VAULT_SECRET_ID` | `keymanager` with AppRole auth    | `<secret-id>`       |
+| `RABBITMQ_ADDR`   | `publisher` plugin is configured  | `rabbitmq:5672`     |
+| `RABBITMQ_USER`   | `publisher` plugin is configured  | `admin`             |
+| `RABBITMQ_PASS`   | `publisher` plugin is configured  | `admin123`          |
 
 No other environment variables are needed. The config path is always passed as the `--config` flag in the command, not as an environment variable.
 
@@ -171,7 +171,7 @@ services:
         condition: service_healthy
 ```
 
----
+***
 
 ## 3. Building Your Own ONIX Image
 
@@ -184,10 +184,10 @@ Build your own image when:
 
 ### Prerequisites
 
-- **Go** — check `go.mod` at the root of this repository for the required version and install that exact version from [golang.org/dl](https://golang.org/dl/)
-- Git
-- Docker
-- Redis — only needed at runtime if the `cache` plugin is configured
+* **Go** — check `go.mod` at the root of this repository for the required version and install that exact version from [golang.org/dl](https://golang.org/dl/)
+* Git
+* Docker
+* Redis — only needed at runtime if the `cache` plugin is configured
 
 ### Build Steps
 
@@ -240,7 +240,7 @@ services:
     image: my-org/beckn-onix:1.6.0
 ```
 
----
+***
 
 ## 4. Production Setup
 
@@ -475,14 +475,16 @@ Repeat the Deployment and Service for `onix-pnode`, pointing at its own config a
 ONIX ships two key manager plugins. The choice is a devops decision based on your operational preferences — not driven by how many instances you run.
 
 **`simplekeymanager`** — Ed25519 keys are embedded directly in the adapter config file. No external dependencies. Choose this when:
-- You are comfortable managing key files and rotating them via a config update + restart
-- You do not operate a Vault cluster and do not want to
+
+* You are comfortable managing key files and rotating them via a config update + restart
+* You do not operate a Vault cluster and do not want to
 
 **`keymanager` (Vault-backed)** — keys are stored in HashiCorp Vault and fetched at runtime. Choose this when:
-- Your organisation already operates Vault
-- You require a full audit trail on key access
-- Your compliance posture mandates centralized secrets management
-- You need to rotate keys without restarting the adapter
+
+* Your organisation already operates Vault
+* You require a full audit trail on key access
+* Your compliance posture mandates centralized secrets management
+* You need to rotate keys without restarting the adapter
 
 **Setting up Vault when chosen:**
 
@@ -515,8 +517,9 @@ vault write -f auth/approle/role/beckn-role/secret-id
 ```
 
 **Key rotation:**
-- `simplekeymanager`: update the key values in the config file and restart the adapter.
-- `keymanager` (Vault): write a new key version with `vault kv put beckn/keys/node ...`; the adapter picks up the new version on its next key fetch without a restart.
+
+* `simplekeymanager`: update the key values in the config file and restart the adapter.
+* `keymanager` (Vault): write a new key version with `vault kv put beckn/keys/node ...`; the adapter picks up the new version on its next key fetch without a restart.
 
 See [CONFIG.md](CONFIG.md) for the full plugin configuration reference for both key managers.
 
@@ -525,9 +528,10 @@ See [CONFIG.md](CONFIG.md) for the full plugin configuration reference for both 
 By default ONIX processes each request synchronously — it calls the upstream participant, waits for a response, and returns. For high-volume deployments, or when your application consumes Beckn callbacks from a queue rather than via a direct webhook, use the `publisher` plugin to route messages through RabbitMQ instead.
 
 **When to use it:**
-- Your application cannot guarantee low-latency webhook handling
-- You need to decouple Beckn message receipt from your application's processing
-- You want durable delivery and retry semantics for inbound callbacks
+
+* Your application cannot guarantee low-latency webhook handling
+* You need to decouple Beckn message receipt from your application's processing
+* You want durable delivery and retry semantics for inbound callbacks
 
 **Add RabbitMQ to your compose or cluster:**
 
@@ -610,10 +614,10 @@ sudo systemctl status beckn-onix
 
 Public cloud providers maintain integration plugins and deployment tooling for ONIX targeting their managed services:
 
-- [Google Cloud Platform](https://github.com/GoogleCloudPlatform/dpi-accelerator-beckn-onix)
-- [Amazon Web Services](https://github.com/beckn/onix-aws-cdk)
+* [Google Cloud Platform](https://github.com/GoogleCloudPlatform/dpi-accelerator-beckn-onix)
+* [Amazon Web Services](https://github.com/beckn/onix-aws-cdk)
 
----
+***
 
 ## 5. Observability
 
@@ -621,9 +625,9 @@ Beckn-ONIX emits metrics, distributed traces, and structured audit logs via the 
 
 Full architecture, signal catalogue, audit log configuration, collector setup, and backend integration guidance:
 
-**[pkg/plugin/implementation/otelsetup/OBSERVABILITY.md](pkg/plugin/implementation/otelsetup/OBSERVABILITY.md)**
+[**pkg/plugin/implementation/otelsetup/OBSERVABILITY.md**](https://github.com/nirmal-inc/docs-test/blob/main/docs/beckn-onix/pkg/plugin/implementation/otelsetup/OBSERVABILITY.md)
 
----
+***
 
 ## 6. Troubleshooting
 
@@ -666,9 +670,9 @@ Check that `REDIS_ADDR` in the container environment matches the Redis service n
 
 **Error:** `signature validation failed: invalid signature`
 
-- Confirm the correct key pair is configured — the public key registered with the network registry must match the private key in `simplekeymanager` or Vault
-- Check clock synchronization between nodes; the signature includes a `created` timestamp and the validator applies a clock-skew tolerance
-- Confirm the `subscriber_id` and `key_id` in the config match what is registered in the network registry
+* Confirm the correct key pair is configured — the public key registered with the network registry must match the private key in `simplekeymanager` or Vault
+* Check clock synchronization between nodes; the signature includes a `created` timestamp and the validator applies a clock-skew tolerance
+* Confirm the `subscriber_id` and `key_id` in the config match what is registered in the network registry
 
 ### Vault authentication failures
 
