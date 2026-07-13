@@ -1,94 +1,93 @@
-# Implementation Guide: Multi-Channel Onboarding of Users into Digital Energy Programs
+# Implementation Guide: Multi-Channel Onboarding of Users into Digital Energy Programs <!-- omit from toc -->
 
 Version 0.2 (Non-Normative)
 
-## Table of Contents
-
-* [1. Introduction](IG_Onboarding_users_in_digital_energy_programs.md#1-introduction)
-* [2. Scope](IG_Onboarding_users_in_digital_energy_programs.md#2-scope)
-* [3. Terminology](IG_Onboarding_users_in_digital_energy_programs.md#3-terminology)
-  * [3.1. Acronyms](IG_Onboarding_users_in_digital_energy_programs.md#31-acronyms)
-* [4. Terminology](IG_Onboarding_users_in_digital_energy_programs.md#4-terminology)
-* [5. Implementation Principles](IG_Onboarding_users_in_digital_energy_programs.md#5-implementation-principles)
-* [6. System Architecture Overview](IG_Onboarding_users_in_digital_energy_programs.md#6-system-architecture-overview)
-* [7. Identity and Authentication Implementation](IG_Onboarding_users_in_digital_energy_programs.md#7-identity-and-authentication-implementation)
-  * [7.1. Authentication Flow](IG_Onboarding_users_in_digital_energy_programs.md#71-authentication-flow)
-  * [7.2. OAuth2 Token Usage](IG_Onboarding_users_in_digital_energy_programs.md#72-oauth2-token-usage)
-  * [7.3. Utility IdP API Examples](IG_Onboarding_users_in_digital_energy_programs.md#73-utility-idp-api-examples)
-  * [7.4. MeterOwnershipCredential VC Issuance](IG_Onboarding_users_in_digital_energy_programs.md#74-meterownershipcredential-vc-issuance)
-  * [7.5. Example Utility API Implementation](IG_Onboarding_users_in_digital_energy_programs.md#75-example-utility-api-implementation)
-* [8. Asset Mapping and Data Integration](IG_Onboarding_users_in_digital_energy_programs.md#8-asset-mapping-and-data-integration)
-  * [8.1. Meter Discovery](IG_Onboarding_users_in_digital_energy_programs.md#81-meter-discovery)
-  * [8.2. DER Discovery](IG_Onboarding_users_in_digital_energy_programs.md#82-der-discovery)
-  * [8.3. Data Integration](IG_Onboarding_users_in_digital_energy_programs.md#83-data-integration)
-* [9. Beckn-Based Enrollment Implementation](IG_Onboarding_users_in_digital_energy_programs.md#9-beckn-based-enrollment-implementation)
-  * [9.1. Standard Beckn Flow](IG_Onboarding_users_in_digital_energy_programs.md#91-standard-beckn-flow)
-  * [9.2. Enrollment Flow Diagram](IG_Onboarding_users_in_digital_energy_programs.md#92-enrollment-flow-diagram)
-    * [9.2.1. High-Level Overview (Both Flows)](IG_Onboarding_users_in_digital_energy_programs.md#921-high-level-overview-both-flows)
-    * [9.2.2. OTP-Based Enrollment Flow (Detailed)](IG_Onboarding_users_in_digital_energy_programs.md#922-otp-based-enrollment-flow-detailed)
-    * [9.2.3. OAuth2/OIDC-Based Enrollment Flow (Detailed)](IG_Onboarding_users_in_digital_energy_programs.md#923-oauth2oidc-based-enrollment-flow-detailed)
-    * [9.2.4. Error Handling: No Meter Specified](IG_Onboarding_users_in_digital_energy_programs.md#924-error-handling-no-meter-specified)
-* [10. Channel-Specific Implementation Guides](IG_Onboarding_users_in_digital_energy_programs.md#10-channel-specific-implementation-guides)
-  * [10.1. Utility Portal (UtilityPortal/BAP)](IG_Onboarding_users_in_digital_energy_programs.md#101-utility-portal-utilityportalbap)
-  * [10.2. Enrolment Agency Portal (EA/BAP)](IG_Onboarding_users_in_digital_energy_programs.md#102-enrolment-agency-portal-eabap)
-  * [10.3. Network Participant App (BAP)](IG_Onboarding_users_in_digital_energy_programs.md#103-network-participant-app-bap)
-* [11. Persona-Specific Implementation Guidance](IG_Onboarding_users_in_digital_energy_programs.md#11-persona-specific-implementation-guidance)
-  * [11.1. Consumer – Single Household, Single Meter](IG_Onboarding_users_in_digital_energy_programs.md#111-consumer--single-household-single-meter)
-  * [11.2. Consumer – Multiple Households, Multiple Meters](IG_Onboarding_users_in_digital_energy_programs.md#112-consumer--multiple-households-multiple-meters)
-  * [11.3. Consumer – BTM Appliances via Home Meter](IG_Onboarding_users_in_digital_energy_programs.md#113-consumer--btm-appliances-via-home-meter)
-  * [11.4. Consumer – BTM Appliances via Same Utility (e.g., neighbor’s meter)](IG_Onboarding_users_in_digital_energy_programs.md#114-consumer--btm-appliances-via-same-utility-eg-neighbors-meter)
-  * [11.5. Consumer/Prosumer – BTM Appliances via Different Utility](IG_Onboarding_users_in_digital_energy_programs.md#115-consumerprosumer--btm-appliances-via-different-utility)
-  * [11.6. Prosumer – Single Rooftop Solar Meter](IG_Onboarding_users_in_digital_energy_programs.md#116-prosumer--single-rooftop-solar-meter)
-  * [11.7. Prosumer – Multiple Meters with Solar](IG_Onboarding_users_in_digital_energy_programs.md#117-prosumer--multiple-meters-with-solar)
-  * [11.8. Prosumer – EV with V2G](IG_Onboarding_users_in_digital_energy_programs.md#118-prosumer--ev-with-v2g)
-* [12. Governance and Operational Guidance](IG_Onboarding_users_in_digital_energy_programs.md#12-governance-and-operational-guidance)
-* [13. Data Models and Storage Considerations](IG_Onboarding_users_in_digital_energy_programs.md#13-data-models-and-storage-considerations)
-* [14. Security and Privacy Implementation](IG_Onboarding_users_in_digital_energy_programs.md#14-security-and-privacy-implementation)
-* [15. Testing, Certification and Compliance](IG_Onboarding_users_in_digital_energy_programs.md#15-testing-certification-and-compliance)
-* [16. Deployment Topology Recommendations](IG_Onboarding_users_in_digital_energy_programs.md#16-deployment-topology-recommendations)
-* [17. Developer Tooling and SDK Recommendations](IG_Onboarding_users_in_digital_energy_programs.md#17-developer-tooling-and-sdk-recommendations)
-* [18. Appendix A – Sample Payloads](IG_Onboarding_users_in_digital_energy_programs.md#18-appendix-a--sample-payloads)
-  * [18.1. Init Request](IG_Onboarding_users_in_digital_energy_programs.md#181-init-request)
-    * [18.1.1. Example: OTP-Based Init Request](IG_Onboarding_users_in_digital_energy_programs.md#1811-example-otp-based-init-request)
-    * [18.1.2. Example: OAuth2/OIDC-Based Init Request](IG_Onboarding_users_in_digital_energy_programs.md#1812-example-oauth2oidc-based-init-request)
-    * [18.1.3. Example: Simple Consumer with Single Meter](IG_Onboarding_users_in_digital_energy_programs.md#1813-example-simple-consumer-with-single-meter)
-    * [18.1.4. Example: Prosumer with Solar and Battery](IG_Onboarding_users_in_digital_energy_programs.md#1814-example-prosumer-with-solar-and-battery)
-  * [18.2. On\_Init Response](IG_Onboarding_users_in_digital_energy_programs.md#182-on_init-response)
-    * [18.2.1. Example: OTP-Based On\_Init Response](IG_Onboarding_users_in_digital_energy_programs.md#1821-example-otp-based-on_init-response)
-    * [18.2.2. Example: OAuth2/OIDC-Based On\_Init Response](IG_Onboarding_users_in_digital_energy_programs.md#1822-example-oauth2oidc-based-on_init-response)
-    * [18.2.3. Example: Successful Verification, No Conflicts](IG_Onboarding_users_in_digital_energy_programs.md#1823-example-successful-verification-no-conflicts)
-    * [18.2.4. Example: Enrollment Conflict Detected](IG_Onboarding_users_in_digital_energy_programs.md#1824-example-enrollment-conflict-detected)
-  * [18.3. Confirm Request](IG_Onboarding_users_in_digital_energy_programs.md#183-confirm-request)
-    * [18.3.1. Example: OTP-Based Confirm Request](IG_Onboarding_users_in_digital_energy_programs.md#1831-example-otp-based-confirm-request)
-    * [18.3.2. Example: OAuth2/OIDC-Based Confirm Request](IG_Onboarding_users_in_digital_energy_programs.md#1832-example-oauth2oidc-based-confirm-request)
-    * [18.3.3. Example: Confirm with Enrollment Dates](IG_Onboarding_users_in_digital_energy_programs.md#1833-example-confirm-with-enrollment-dates)
-  * [18.4. On\_Confirm Response](IG_Onboarding_users_in_digital_energy_programs.md#184-on_confirm-response)
-    * [18.4.1. Example: OTP-Based On\_Confirm Response (Success)](IG_Onboarding_users_in_digital_energy_programs.md#1841-example-otp-based-on_confirm-response-success)
-    * [18.4.2. Example: OAuth2/OIDC-Based On\_Confirm Response (Success)](IG_Onboarding_users_in_digital_energy_programs.md#1842-example-oauth2oidc-based-on_confirm-response-success)
-    * [18.4.3. Example: No Meter Specified Error](IG_Onboarding_users_in_digital_energy_programs.md#1843-example-no-meter-specified-error)
-    * [18.4.4. Example: Successful Enrollment with Credential](IG_Onboarding_users_in_digital_energy_programs.md#1844-example-successful-enrollment-with-credential)
-  * [18.5. Error Response Example](IG_Onboarding_users_in_digital_energy_programs.md#185-error-response-example)
-    * [18.5.1. Example: Credential Verification Failed](IG_Onboarding_users_in_digital_energy_programs.md#1851-example-credential-verification-failed)
-  * [18.6. Consent Revocation](IG_Onboarding_users_in_digital_energy_programs.md#186-consent-revocation)
-    * [18.6.1. Example: Consent Revocation Request](IG_Onboarding_users_in_digital_energy_programs.md#1861-example-consent-revocation-request)
-    * [18.6.2. Example: Consent Revocation Response](IG_Onboarding_users_in_digital_energy_programs.md#1862-example-consent-revocation-response)
-  * [18.7. Unenrollment](IG_Onboarding_users_in_digital_energy_programs.md#187-unenrollment)
-    * [18.7.1. Example: Unenrollment Request](IG_Onboarding_users_in_digital_energy_programs.md#1871-example-unenrollment-request)
-    * [18.7.2. Example: Unenrollment Response](IG_Onboarding_users_in_digital_energy_programs.md#1872-example-unenrollment-response)
-* [19. Appendix B – Multi-Utility Interaction Patterns](IG_Onboarding_users_in_digital_energy_programs.md#19-appendix-b--multi-utility-interaction-patterns)
-* [20. Appendix C – Error Handling Patterns](IG_Onboarding_users_in_digital_energy_programs.md#20-appendix-c--error-handling-patterns)
+## Table of Contents <!-- omit from toc -->
+- [1. Introduction](#1-introduction)
+- [2. Scope](#2-scope)
+- [3. Terminology](#3-terminology)
+  - [3.1. Acronyms](#31-acronyms)
+- [4. Terminology](#4-terminology)
+- [5. Implementation Principles](#5-implementation-principles)
+- [6. System Architecture Overview](#6-system-architecture-overview)
+- [7. Identity and Authentication Implementation](#7-identity-and-authentication-implementation)
+  - [7.1. Authentication Flow](#71-authentication-flow)
+  - [7.2. OAuth2 Token Usage](#72-oauth2-token-usage)
+  - [7.3. Utility IdP API Examples](#73-utility-idp-api-examples)
+  - [7.4. MeterOwnershipCredential VC Issuance](#74-meterownershipcredential-vc-issuance)
+  - [7.5. Example Utility API Implementation](#75-example-utility-api-implementation)
+- [8. Asset Mapping and Data Integration](#8-asset-mapping-and-data-integration)
+  - [8.1. Meter Discovery](#81-meter-discovery)
+  - [8.2. DER Discovery](#82-der-discovery)
+  - [8.3. Data Integration](#83-data-integration)
+- [9. Beckn-Based Enrollment Implementation](#9-beckn-based-enrollment-implementation)
+  - [9.1. Standard Beckn Flow](#91-standard-beckn-flow)
+  - [9.2. Enrollment Flow Diagram](#92-enrollment-flow-diagram)
+    - [9.2.1. High-Level Overview (Both Flows)](#921-high-level-overview-both-flows)
+    - [9.2.2. OTP-Based Enrollment Flow (Detailed)](#922-otp-based-enrollment-flow-detailed)
+    - [9.2.3. OAuth2/OIDC-Based Enrollment Flow (Detailed)](#923-oauth2oidc-based-enrollment-flow-detailed)
+    - [9.2.4. Error Handling: No Meter Specified](#924-error-handling-no-meter-specified)
+- [10. Channel-Specific Implementation Guides](#10-channel-specific-implementation-guides)
+  - [10.1. Utility Portal (UtilityPortal/BAP)](#101-utility-portal-utilityportalbap)
+  - [10.2. Enrolment Agency Portal (EA/BAP)](#102-enrolment-agency-portal-eabap)
+  - [10.3. Network Participant App (BAP)](#103-network-participant-app-bap)
+- [11. Persona-Specific Implementation Guidance](#11-persona-specific-implementation-guidance)
+  - [11.1. Consumer – Single Household, Single Meter](#111-consumer--single-household-single-meter)
+  - [11.2. Consumer – Multiple Households, Multiple Meters](#112-consumer--multiple-households-multiple-meters)
+  - [11.3. Consumer – BTM Appliances via Home Meter](#113-consumer--btm-appliances-via-home-meter)
+  - [11.4. Consumer – BTM Appliances via Same Utility (e.g., neighbor’s meter)](#114-consumer--btm-appliances-via-same-utility-eg-neighbors-meter)
+  - [11.5. Consumer/Prosumer – BTM Appliances via Different Utility](#115-consumerprosumer--btm-appliances-via-different-utility)
+  - [11.6. Prosumer – Single Rooftop Solar Meter](#116-prosumer--single-rooftop-solar-meter)
+  - [11.7. Prosumer – Multiple Meters with Solar](#117-prosumer--multiple-meters-with-solar)
+  - [11.8. Prosumer – EV with V2G](#118-prosumer--ev-with-v2g)
+- [12. Governance and Operational Guidance](#12-governance-and-operational-guidance)
+- [13. Data Models and Storage Considerations](#13-data-models-and-storage-considerations)
+- [14. Security and Privacy Implementation](#14-security-and-privacy-implementation)
+- [15. Testing, Certification and Compliance](#15-testing-certification-and-compliance)
+- [16. Deployment Topology Recommendations](#16-deployment-topology-recommendations)
+- [17. Developer Tooling and SDK Recommendations](#17-developer-tooling-and-sdk-recommendations)
+- [18. Appendix A – Sample Payloads](#18-appendix-a--sample-payloads)
+  - [18.1. Init Request](#181-init-request)
+    - [18.1.1. Example: OTP-Based Init Request](#1811-example-otp-based-init-request)
+    - [18.1.2. Example: OAuth2/OIDC-Based Init Request](#1812-example-oauth2oidc-based-init-request)
+    - [18.1.3. Example: Simple Consumer with Single Meter](#1813-example-simple-consumer-with-single-meter)
+    - [18.1.4. Example: Prosumer with Solar and Battery](#1814-example-prosumer-with-solar-and-battery)
+  - [18.2. On\_Init Response](#182-on_init-response)
+    - [18.2.1. Example: OTP-Based On\_Init Response](#1821-example-otp-based-on_init-response)
+    - [18.2.2. Example: OAuth2/OIDC-Based On\_Init Response](#1822-example-oauth2oidc-based-on_init-response)
+    - [18.2.3. Example: Successful Verification, No Conflicts](#1823-example-successful-verification-no-conflicts)
+    - [18.2.4. Example: Enrollment Conflict Detected](#1824-example-enrollment-conflict-detected)
+  - [18.3. Confirm Request](#183-confirm-request)
+    - [18.3.1. Example: OTP-Based Confirm Request](#1831-example-otp-based-confirm-request)
+    - [18.3.2. Example: OAuth2/OIDC-Based Confirm Request](#1832-example-oauth2oidc-based-confirm-request)
+    - [18.3.3. Example: Confirm with Enrollment Dates](#1833-example-confirm-with-enrollment-dates)
+  - [18.4. On\_Confirm Response](#184-on_confirm-response)
+    - [18.4.1. Example: OTP-Based On\_Confirm Response (Success)](#1841-example-otp-based-on_confirm-response-success)
+    - [18.4.2. Example: OAuth2/OIDC-Based On\_Confirm Response (Success)](#1842-example-oauth2oidc-based-on_confirm-response-success)
+    - [18.4.3. Example: No Meter Specified Error](#1843-example-no-meter-specified-error)
+    - [18.4.4. Example: Successful Enrollment with Credential](#1844-example-successful-enrollment-with-credential)
+  - [18.5. Error Response Example](#185-error-response-example)
+    - [18.5.1. Example: Credential Verification Failed](#1851-example-credential-verification-failed)
+  - [18.6. Consent Revocation](#186-consent-revocation)
+    - [18.6.1. Example: Consent Revocation Request](#1861-example-consent-revocation-request)
+    - [18.6.2. Example: Consent Revocation Response](#1862-example-consent-revocation-response)
+  - [18.7. Unenrollment](#187-unenrollment)
+    - [18.7.1. Example: Unenrollment Request](#1871-example-unenrollment-request)
+    - [18.7.2. Example: Unenrollment Response](#1872-example-unenrollment-response)
+- [19. Appendix B – Multi-Utility Interaction Patterns](#19-appendix-b--multi-utility-interaction-patterns)
+- [20. Appendix C – Error Handling Patterns](#20-appendix-c--error-handling-patterns)
 
 Table of contents and section auto-numbering was done using [Markdown-All-In-One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) vscode extension. Specifically `Markdown All in One: Create Table of Contents` and `Markdown All in One: Add/Update section numbers` commands accessible via vs code command pallete.
 
-Example jsons were imported directly from source of truth elsewhere in this repo inline by inserting the pattern below within all json expand blocks, and running this [script](https://github.com/nirmal-inc/docs-test/blob/main/scripts/embed_example_json.py), e.g. `python3 scripts/embed_example_json.py path_to_markdown_file.md`.
+Example jsons were imported directly from source of truth elsewhere in this repo inline by inserting the pattern below within all json expand blocks, and running this [script](/scripts/embed_example_json.py), e.g. `python3 scripts/embed_example_json.py path_to_markdown_file.md`.
 
 ```
 <details><summary><a href="/path_to_file_from_root">txt_with_json_keyword</a></summary>
 
 </details>
-```
+``` 
 
-***
+---
 
 ## 1. Introduction
 
@@ -110,7 +109,7 @@ A successful onboarding process must confirm:
 
 This guide provides engineering and operational recommendations to implement the multi-channel model defined in the Technical Specification.
 
-***
+---
 
 ## 2. Scope
 
@@ -127,7 +126,7 @@ This document covers:
 
 This guide does not redefine schemas or protocol rules; those remain in the Technical Specification.
 
-***
+---
 
 ## 3. Terminology
 
@@ -135,65 +134,68 @@ Below is a consolidated terminology set used throughout this guide.
 
 ### 3.1. Acronyms
 
-| Acronym               | Full Form                             | Definition                                                                                                                                                                                                                      |
-| --------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Utility IdP**       | Utility Identity Provider             | The OIDC-based identity provider operated by or on behalf of a utility. Handles user authentication (OTP, password, etc.) and issues OAuth2 tokens and Verifiable Credentials.                                                  |
+| Acronym | Full Form | Definition |
+|---------|-----------|------------|
+| **Utility IdP** | Utility Identity Provider | The OIDC-based identity provider operated by or on behalf of a utility. Handles user authentication (OTP, password, etc.) and issues OAuth2 tokens and Verifiable Credentials. |
 | **Program Owner BPP** | Program Owner Beckn Provider Platform | The BPP implementation operated by the Program Owner (utility or energy program operator). Also referred to as UtilityBPP or Orchestrator in some contexts. Handles enrollment flows and issues Program Enrollment Credentials. |
 
-***
+---
 
 ## 4. Terminology
 
-| Term                                   | Definition                                                                                                                                                                             |
-| -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| User / End User                        | A person or organization participating in a digital energy program (consumer, prosumer, EV owner, business).                                                                           |
-| Utility                                | An electricity provider responsible for metering, billing, and grid operations.                                                                                                        |
-| Program Owner                          | The entity offering a digital energy program (P2P, Flex, VPP). Operates the Program Owner BPP (also called UtilityBPP/Orchestrator) for enrollment flows.                              |
-| Utility IdP                            | Utility Identity Provider. OIDC-based identity provider that handles user authentication and issues OAuth2 tokens and Verifiable Credentials.                                          |
+| Term                                   | Definition                                                                                                            |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| User / End User                        | A person or organization participating in a digital energy program (consumer, prosumer, EV owner, business).          |
+| Utility                                | An electricity provider responsible for metering, billing, and grid operations.                                       |
+| Program Owner                          | The entity offering a digital energy program (P2P, Flex, VPP). Operates the Program Owner BPP (also called UtilityBPP/Orchestrator) for enrollment flows.                        |
+| Utility IdP                            | Utility Identity Provider. OIDC-based identity provider that handles user authentication and issues OAuth2 tokens and Verifiable Credentials. |
 | Program Owner BPP                      | Program Owner Beckn Provider Platform. The BPP implementation that handles enrollment flows and issues Program Enrollment Credentials. Also referred to as UtilityBPP or Orchestrator. |
-| Enrolment Agency (EA)                  | A utility-certified entity authorized to onboard users, either via self-service or assisted flows.                                                                                     |
-| Network Participant                    | Any Beckn-enabled application (BAP, BPP, NFO, EV app, DER app) that can trigger onboarding but is not a certified EA.                                                                  |
-| Network Facilitator Organization (NFO) | A neutral governance or orchestration entity in a digital energy network. Does not make eligibility decisions.                                                                         |
-| National Identity                      | A government-backed identity (e.g., Social Security Number, Aadhaar, BankID, SingPass) used via federated IdPs.                                                                        |
-| Utility Customer Identifier            | A unique customer or account number issued by a utility.                                                                                                                               |
-| Program-Level Meter Identifier (UMID)  | A universal, utility-agnostic meter identity used across programs.                                                                                                                     |
-| DER Identifier (DER-ID)                | Unique program-level identifier for a distributed energy resource.                                                                                                                     |
-| Subject Identifier (subject\_id)       | The unified identifier for a user across utilities, apps, and programs (often a DID or OIDC `sub`).                                                                                    |
-| Meter                                  | A physical electricity meter tracking consumption, generation, or net flow.                                                                                                            |
-| Behind-the-Meter (BTM) Appliance       | A device consuming or producing energy behind a user’s meter (e.g., EV charging at home).                                                                                              |
-| Distributed Energy Resource (DER)      | Any distributed asset such as solar PV, EV, home batteries, V2G, or smart loads.                                                                                                       |
-| EVSE                                   | Electric Vehicle Supply Equipment (charging station).                                                                                                                                  |
-| Digital Energy Program                 | Any structured offering such as P2P trading, Flex, VPP, Community Solar, or special tariffs.                                                                                           |
-| Program Enrollment                     | Approval for a user to join a program, issued as a Verifiable Credential.                                                                                                              |
-| Eligibility Criteria                   | Conditions needed for joining a program, returned dynamically via Beckn select/init flows.                                                                                             |
-| Consent                                | Authorization for data sharing, telemetry, control rights, or cross-utility interactions.                                                                                              |
-| BAP (Beckn Application Platform)       | A consumer-facing Beckn application.                                                                                                                                                   |
-| BPP (Beckn Provider Platform)          | A provider system responding to Beckn calls. The Program Owner serves as a BPP for onboarding.                                                                                         |
-| Discover / Select / Init / Confirm     | The four core Beckn workflow steps used for onboarding.                                                                                                                                |
-| Context Object                         | Beckn metadata (transaction ID, timestamp, domain, signature info).                                                                                                                    |
-| Utility Portal                         | User-facing portal run by a utility for onboarding.                                                                                                                                    |
-| Enrolment Agency Portal                | A certified EA’s portal for onboarding users.                                                                                                                                          |
-| Onboarding SDK                         | A software kit embedded inside apps to execute standardized onboarding flows.                                                                                                          |
-| Network Participant Application        | Any application embedding the onboarding SDK (EV, DER, aggregator, smart home apps).                                                                                                   |
-| Program Enrollment Credential          | A Verifiable Credential proving program participation.                                                                                                                                 |
-| Revocation List                        | Mechanism for invalidating credentials.                                                                                                                                                |
-| DER Certification                      | Proof that a DER asset (solar, EVSE, etc.) is compliant and safely installed.                                                                                                          |
-| Audit Trail                            | Signed, immutable record of onboarding-related actions.                                                                                                                                |
-| Authorization                          | Permission to onboard users or to control DER assets.                                                                                                                                  |
-| Capability                             | Functional characteristics an entity or device supports (e.g., V2G capability).                                                                                                        |
+| Enrolment Agency (EA)                  | A utility-certified entity authorized to onboard users, either via self-service or assisted flows.                    |
+| Network Participant                    | Any Beckn-enabled application (BAP, BPP, NFO, EV app, DER app) that can trigger onboarding but is not a certified EA. |
+| Network Facilitator Organization (NFO) | A neutral governance or orchestration entity in a digital energy network. Does not make eligibility decisions.        |
+| National Identity                      | A government-backed identity (e.g., Social Security Number, Aadhaar, BankID, SingPass) used via federated IdPs.       |
+| Utility Customer Identifier            | A unique customer or account number issued by a utility.                                                              |
+| Program-Level Meter Identifier (UMID)  | A universal, utility-agnostic meter identity used across programs.                                                    |
+| DER Identifier (DER-ID)                | Unique program-level identifier for a distributed energy resource.                                                    |
+| Subject Identifier (subject_id)        | The unified identifier for a user across utilities, apps, and programs (often a DID or OIDC `sub`).                   |
+| Meter                                  | A physical electricity meter tracking consumption, generation, or net flow.                                           |
+| Behind-the-Meter (BTM) Appliance       | A device consuming or producing energy behind a user’s meter (e.g., EV charging at home).                             |
+| Distributed Energy Resource (DER)      | Any distributed asset such as solar PV, EV, home batteries, V2G, or smart loads.                                      |
+| EVSE                                   | Electric Vehicle Supply Equipment (charging station).                                                                 |
+| Digital Energy Program                 | Any structured offering such as P2P trading, Flex, VPP, Community Solar, or special tariffs.                          |
+| Program Enrollment                     | Approval for a user to join a program, issued as a Verifiable Credential.                                             |
+| Eligibility Criteria                   | Conditions needed for joining a program, returned dynamically via Beckn select/init flows.                            |
+| Consent                                | Authorization for data sharing, telemetry, control rights, or cross-utility interactions.                             |
+| BAP (Beckn Application Platform)       | A consumer-facing Beckn application.                                                                                  |
+| BPP (Beckn Provider Platform)          | A provider system responding to Beckn calls. The Program Owner serves as a BPP for onboarding.                        |
+| Discover / Select / Init / Confirm     | The four core Beckn workflow steps used for onboarding.                                                               |
+| Context Object                         | Beckn metadata (transaction ID, timestamp, domain, signature info).                                                   |
+| Utility Portal                         | User-facing portal run by a utility for onboarding.                                                                   |
+| Enrolment Agency Portal                | A certified EA’s portal for onboarding users.                                                                         |
+| Onboarding SDK                         | A software kit embedded inside apps to execute standardized onboarding flows.                                         |
+| Network Participant Application        | Any application embedding the onboarding SDK (EV, DER, aggregator, smart home apps).                                  |
+| Program Enrollment Credential          | A Verifiable Credential proving program participation.                                                                |
+| Revocation List                        | Mechanism for invalidating credentials.                                                                               |
+| DER Certification                      | Proof that a DER asset (solar, EVSE, etc.) is compliant and safely installed.                                         |
+| Audit Trail                            | Signed, immutable record of onboarding-related actions.                                                               |
+| Authorization                          | Permission to onboard users or to control DER assets.                                                                 |
+| Capability                             | Functional characteristics an entity or device supports (e.g., V2G capability).                                       |
 
-***
+
+
+---
 
 ## 5. Implementation Principles
 
 1. All onboarding channels must route to the same Program Owner backend.
-2. Onboarding follows a consistent order: identity → meters → DERs → program evaluation → enrollment.
+2. Onboarding follows a consistent order:
+   identity → meters → DERs → program evaluation → enrollment.
 3. Eligibility criteria must be fetched dynamically from the Program Owner.
 4. All telemetry, cross-utility, and DER control actions require explicit consent.
 5. Beckn discover/select/init/confirm flows should be reused without deviation.
 6. User inputs should be minimized through auto-discovery where possible.
 
-***
+---
 
 ## 6. System Architecture Overview
 
@@ -231,7 +233,7 @@ graph TD
   BPP --> VCISS[VC Issuer / Revocation Service]
 ```
 
-***
+---
 
 ## 7. Identity and Authentication Implementation
 
@@ -244,7 +246,6 @@ The enrollment flow supports two authentication methods, both embedded within th
 **Important: Authentication is NOT required for /discover and /select.** Users can browse programs anonymously. Authentication is only required starting from `/init`.
 
 **Option 1: OTP-Based Authentication (BPP-Orchestrated)**
-
 1. User browses programs via `/discover` and `/select` (anonymous, no auth required)
 2. User decides to enroll → provides mobile number to UtilityPortal/BAP
 3. BAP sends `init` request with `userAuth: { authMethod: "OTP", mobile: "..." }`
@@ -255,7 +256,6 @@ The enrollment flow supports two authentication methods, both embedded within th
 8. BPP creates enrollment and returns credential
 
 **Option 2: OAuth2/OIDC Authentication (Deferred until /init)**
-
 1. User browses programs via `/discover` and `/select` (anonymous, no auth required)
 2. User decides to enroll → BAP redirects to Utility IdP for OAuth2/OIDC login
 3. User authenticates with Utility IdP (receives accessToken, idToken)
@@ -270,13 +270,11 @@ The enrollment flow supports two authentication methods, both embedded within th
 **IMPORTANT: OAuth2/OIDC tokens are transmitted in the Beckn message payload (`orderAttributes.userAuth`), NOT in HTTP Authorization headers.**
 
 This design ensures:
-
-* Authentication is part of the business flow, not transport layer
-* BPP can orchestrate authentication with multiple IdPs
-* Consistent handling across different authentication methods (OTP vs OAuth2)
+- Authentication is part of the business flow, not transport layer
+- BPP can orchestrate authentication with multiple IdPs
+- Consistent handling across different authentication methods (OTP vs OAuth2)
 
 **Example Beckn Request with OAuth2 Token in Payload:**
-
 ```http
 POST /beckn/init HTTP/1.1
 Host: program-owner-bpp.example.com
@@ -306,7 +304,6 @@ X-Gateway-Authorization: <beckn_gateway_signature>
 ```
 
 **Example OTP-Based Request:**
-
 ```json
 {
   "message": {
@@ -324,7 +321,6 @@ X-Gateway-Authorization: <beckn_gateway_signature>
 ```
 
 **Example OAuth2 Token Payload (decoded JWT):**
-
 ```json
 {
   "sub": "did:example:user-12345",
@@ -341,34 +337,30 @@ X-Gateway-Authorization: <beckn_gateway_signature>
 ```
 
 **Standard OAuth2 Token Fields:**
-
-* `sub`: Subject identifier (user's unique ID)
-* `aud`: Audience (intended recipient, e.g., Program Owner BPP)
-* `iss`: Issuer (Utility IdP URL)
-* `iat`: Issued at (Unix timestamp)
-* `exp`: Expiration time (Unix timestamp)
-* `nonce`: Random value to prevent replay attacks
-* `acr`: Authentication Context Class Reference (assurance level)
-* `amr`: Authentication Methods References (e.g., \["otp", "password"])
+- `sub`: Subject identifier (user's unique ID)
+- `aud`: Audience (intended recipient, e.g., Program Owner BPP)
+- `iss`: Issuer (Utility IdP URL)
+- `iat`: Issued at (Unix timestamp)
+- `exp`: Expiration time (Unix timestamp)
+- `nonce`: Random value to prevent replay attacks
+- `acr`: Authentication Context Class Reference (assurance level)
+- `amr`: Authentication Methods References (e.g., ["otp", "password"])
 
 **Custom Claims (Utility-Specific):**
-
-* `meterId`: Meter identifier (UMID)
-* `caNumber`: Customer account number
-* Additional utility-specific claims as needed
+- `meterId`: Meter identifier (UMID)
+- `caNumber`: Customer account number
+- Additional utility-specific claims as needed
 
 ### 7.3. Utility IdP API Examples
 
 The Utility IdP provides APIs for OTP generation, verification, and consumer validation. **These APIs are called by the Program Owner BPP** (not the BAP) to orchestrate authentication. This design allows:
-
-* BPP to manage authentication flow centrally
-* Support for multiple Utility IdPs in multi-utility scenarios
-* Consistent authentication regardless of BAP implementation
+- BPP to manage authentication flow centrally
+- Support for multiple Utility IdPs in multi-utility scenarios
+- Consistent authentication regardless of BAP implementation
 
 The exact API structure may vary by utility, but the following represents common patterns:
 
 **Generic OTP Generation Request:**
-
 ```http
 POST /api/v1/otp/generate
 Authorization: Bearer <api_token>
@@ -381,7 +373,6 @@ Content-Type: application/json
 ```
 
 **Generic OTP Generation Response:**
-
 ```json
 {
   "status": "success",
@@ -393,7 +384,6 @@ Content-Type: application/json
 ```
 
 **Generic OTP Verification Request:**
-
 ```http
 POST /api/v1/otp/verify
 Authorization: Bearer <api_token>
@@ -407,7 +397,6 @@ Content-Type: application/json
 ```
 
 **Generic OTP Verification Response:**
-
 ```json
 {
   "status": "success",
@@ -450,7 +439,6 @@ Content-Type: application/json
 **Note:** The `accessToken` is optional in the response. The BPP may or may not receive an OAuth2 token from the Utility IdP. The critical data returned is the `meters` array and optional `p2pdetails` (additionalAttributes) which are passed to the BAP in the `on_confirm` response.
 
 **Generic Consumer Validation Request:**
-
 ```http
 POST /api/v1/consumer/validate
 Authorization: Bearer <api_token>
@@ -464,7 +452,6 @@ Content-Type: application/json
 ```
 
 **Generic Consumer Validation Response:**
-
 ```json
 {
   "status": "success",
@@ -485,7 +472,6 @@ Content-Type: application/json
 After successful OTP verification and consumer validation, the Utility IdP issues a `MeterOwnershipCredential` Verifiable Credential. This VC is then included in the Beckn `init` request's `orderAttributes.meterOwnershipCredential` field.
 
 **Example MeterOwnershipCredential VC (decoded JWT payload):**
-
 ```json
 {
   "vc": {
@@ -515,7 +501,6 @@ This VC proves that the user (identified by `subject_id` from OAuth2 token) owns
 For reference, the following section shows an example of how a specific utility might implement these APIs. **Note:** This is for illustration only; actual utility implementations may vary.
 
 <details>
-
 <summary>Example Utility API Implementation (Click to expand)</summary>
 
 **Example: Utility-Specific OTP API**
@@ -523,7 +508,6 @@ For reference, the following section shows an example of how a specific utility 
 Some utilities may require field-level encryption for security. The following shows an example pattern:
 
 **GenerateOTP Request (with encryption):**
-
 ```http
 POST /api/integration/otp/generate
 Content-Type: application/json
@@ -536,7 +520,6 @@ Content-Type: application/json
 ```
 
 **GenerateOTP Response:**
-
 ```json
 {
   "message": "SUCCESS",
@@ -546,7 +529,6 @@ Content-Type: application/json
 ```
 
 **VerifyOTP Request (with encryption):**
-
 ```http
 POST /api/integration/otp/verify
 Content-Type: application/json
@@ -561,7 +543,6 @@ Content-Type: application/json
 ```
 
 **ValidateConsumer Request (with encryption):**
-
 ```http
 POST /api/integration/consumer/validate
 Content-Type: application/json
@@ -577,7 +558,6 @@ Content-Type: application/json
 ```
 
 **ValidateConsumer Response (decrypted):**
-
 ```json
 {
   "CA": "CA123456789",
@@ -593,13 +573,15 @@ Content-Type: application/json
 
 </details>
 
-***
+---
 
 ## 8. Asset Mapping and Data Integration
 
 ### 8.1. Meter Discovery
 
-Utility Portal: call CIS/MDM. EA Portal: call a protected utility Meter API with user token. SDK: rely on BPP’s Beckn init to resolve meter associations.
+Utility Portal: call CIS/MDM.
+EA Portal: call a protected utility Meter API with user token.
+SDK: rely on BPP’s Beckn init to resolve meter associations.
 
 ### 8.2. DER Discovery
 
@@ -619,37 +601,35 @@ Typical integrations:
 * DER registry or asset database
 * EV charging platforms if relevant
 
-***
+---
 
 ## 9. Beckn-Based Enrollment Implementation
 
 ### 9.1. Standard Beckn Flow
 
 1. discover
-2. on\_discover
+2. on_discover
 3. select
-4. on\_select
+4. on_select
 5. init
-6. on\_init
+6. on_init
 7. confirm
-8. on\_confirm
+8. on_confirm
 
 ### 9.2. Enrollment Flow Diagram
 
 The enrollment flow supports two authentication methods embedded within the Beckn protocol:
-
 1. **OTP-based authentication** - BPP orchestrates OTP flow with Utility IdP
 2. **OAuth2/OIDC authentication** - User authenticates at /init, token passed in message payload
 
 **Key Design Principles:**
-
-* **Anonymous discovery**: `/discover` and `/select` do NOT require authentication - users can browse programs freely
-* **Authentication at /init**: Authentication is only required when user decides to enroll (at `/init` call)
-* Authentication credentials (OTP or OAuth2 tokens) are passed in **message payload** (`orderAttributes.userAuth`), NOT in HTTP headers
-* Program Owner BPP orchestrates authentication by calling Utility IdP
-* `/on_init` response includes **list of user's meters** for selection
-* After verification, BPP returns meters array and optional p2pdetails (additionalAttributes)
-* If no meters specified in `/confirm`, error response includes available meters for user selection
+- **Anonymous discovery**: `/discover` and `/select` do NOT require authentication - users can browse programs freely
+- **Authentication at /init**: Authentication is only required when user decides to enroll (at `/init` call)
+- Authentication credentials (OTP or OAuth2 tokens) are passed in **message payload** (`orderAttributes.userAuth`), NOT in HTTP headers
+- Program Owner BPP orchestrates authentication by calling Utility IdP
+- `/on_init` response includes **list of user's meters** for selection
+- After verification, BPP returns meters array and optional p2pdetails (additionalAttributes)
+- If no meters specified in `/confirm`, error response includes available meters for user selection
 
 #### 9.2.1. High-Level Overview (Both Flows)
 
@@ -790,11 +770,10 @@ sequenceDiagram
 ```
 
 **Key Points:**
-
-* `/discover` and `/select` are **anonymous** - no authentication required
-* Authentication happens at `/init` - this is when BPP validates token and retrieves user's meters
-* `/on_init` response includes the **list of meters** belonging to the user
-* BAP displays meters to user for selection before `/confirm`
+- `/discover` and `/select` are **anonymous** - no authentication required
+- Authentication happens at `/init` - this is when BPP validates token and retrieves user's meters
+- `/on_init` response includes the **list of meters** belonging to the user
+- BAP displays meters to user for selection before `/confirm`
 
 #### 9.2.4. Error Handling: No Meter Specified
 
@@ -815,7 +794,6 @@ sequenceDiagram
 ```
 
 **Error Response JSON Example:**
-
 ```json
 {
   "error": {
@@ -846,7 +824,7 @@ sequenceDiagram
 
 This allows the BAP to display the user's meters and let them select which meter(s) to enroll, then retry the `/confirm` request.
 
-***
+---
 
 ## 10. Channel-Specific Implementation Guides
 
@@ -887,7 +865,7 @@ App responsibilities:
 * Never bypass BPP decisions
 * **Never call Utility IdP directly** (BPP orchestrates authentication)
 
-***
+---
 
 ## 11. Persona-Specific Implementation Guidance
 
@@ -923,7 +901,7 @@ Multiple program enrollments required.
 
 Requires control rights, telemetry consent, and device capability checks.
 
-***
+---
 
 ## 12. Governance and Operational Guidance
 
@@ -946,23 +924,23 @@ Network participants must:
 * Not store identity information beyond what is allowed
 * Present correct program information
 
-***
+---
 
 ## 13. Data Models and Storage Considerations
 
 Recommended tables:
 
 * subjects
-* subject\_utility\_links
-* meters and meter\_subject\_links
-* ders and der\_subject\_links
-* program\_enrollments (VC references)
-* consents and consent\_events
-* audit\_logs
+* subject_utility_links
+* meters and meter_subject_links
+* ders and der_subject_links
+* program_enrollments (VC references)
+* consents and consent_events
+* audit_logs
 
 Use encryption, tokenization, and strict retention schedules.
 
-***
+---
 
 ## 14. Security and Privacy Implementation
 
@@ -972,7 +950,7 @@ Use encryption, tokenization, and strict retention schedules.
 * Avoid collecting identity attributes beyond what is required.
 * Provide consent revocation and logging.
 
-***
+---
 
 ## 15. Testing, Certification and Compliance
 
@@ -987,7 +965,7 @@ Test categories include:
 
 Compliance levels range from basic consumer onboarding to V2G-capable advanced programs.
 
-***
+---
 
 ## 16. Deployment Topology Recommendations
 
@@ -1036,7 +1014,7 @@ graph TD
   BPP --> VCISS
 ```
 
-***
+---
 
 ## 17. Developer Tooling and SDK Recommendations
 
@@ -1045,19 +1023,18 @@ graph TD
 * Provide reference apps and API collections.
 * Offer sandbox environments for testing.
 
-***
+---
 
 ## 18. Appendix A – Sample Payloads
 
 ### 18.1. Init Request
 
-The init request includes Verifiable Credentials (VCs) provided by the calling entity (Portal/BAP) that prove meter ownership, program eligibility, and DER certifications.
+The init request includes Verifiable Credentials (VCs) provided by the calling entity (Portal/BAP) that prove meter ownership, program eligibility, and DER certifications. 
 
 **Credential Placement:**
-
-* **Meter ownership credentials** are placed in `orderAttributes.meterOwnershipCredential` (single object, not array)
-* **Program eligibility and DER certification credentials** are placed in `fulfillmentAttributes.credentials[]` (array)
-* **Existing enrollments** for conflict checking are placed in `fulfillmentAttributes.existingEnrollments[]` (array)
+- **Meter ownership credentials** are placed in `orderAttributes.meterOwnershipCredential` (single object, not array)
+- **Program eligibility and DER certification credentials** are placed in `fulfillmentAttributes.credentials[]` (array)
+- **Existing enrollments** for conflict checking are placed in `fulfillmentAttributes.existingEnrollments[]` (array)
 
 For utilities requiring OTP verification, the `MeterOwnershipCredential` VC is issued by the Utility IdP after successful OTP verification and is included in `orderAttributes`.
 
@@ -1065,9 +1042,7 @@ The Program Owner BPP verifies these credentials and checks for conflicts with e
 
 #### 18.1.1. Example: OTP-Based Init Request
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/init-request-otp.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/init-request-otp.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1126,19 +1101,15 @@ The Program Owner BPP verifies these credentials and checks for conflicts with e
 }
 
 ```
-
 </details>
 
 **Key Fields for OTP Flow**:
-
-* `orderAttributes.userAuth.authMethod`: Set to `"OTP"`
-* `orderAttributes.userAuth.mobile`: User's mobile number for OTP delivery
+- `orderAttributes.userAuth.authMethod`: Set to `"OTP"`
+- `orderAttributes.userAuth.mobile`: User's mobile number for OTP delivery
 
 #### 18.1.2. Example: OAuth2/OIDC-Based Init Request
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/init-request-oauth2.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/init-request-oauth2.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1196,20 +1167,17 @@ The Program Owner BPP verifies these credentials and checks for conflicts with e
 }
 
 ```
-
 </details>
 
 **Key Fields for OAuth2 Flow**:
-
-* `orderAttributes.userAuth.authMethod`: Set to `"OIDC"`
-* `orderAttributes.userAuth.accessToken`: OAuth2 access token from Utility IdP
-* `orderAttributes.userAuth.idToken`: OIDC identity token (optional)
+- `orderAttributes.userAuth.authMethod`: Set to `"OIDC"`
+- `orderAttributes.userAuth.accessToken`: OAuth2 access token from Utility IdP
+- `orderAttributes.userAuth.idToken`: OIDC identity token (optional)
 
 #### 18.1.3. Example: Simple Consumer with Single Meter
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/init-request-simple-consumer.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/init-request-simple-consumer.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1281,24 +1249,21 @@ The Program Owner BPP verifies these credentials and checks for conflicts with e
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `order.orderAttributes.meterOwnershipCredential`: Meter ownership credential (single object) proving ownership of the meter/CA, verified through OTP flow with Utility IdP
-  * The credential's `verificationUrl` points to the utility's verification endpoint
-* `fulfillment.fulfillmentAttributes.credentials[]`: Array of VCs proving program eligibility, DER certifications, etc.
-* `fulfillment.fulfillmentAttributes.existingEnrollments[]`: Array of existing enrollment credentials for conflict checking
-* Program Owner BPP verifies these credentials and checks for conflicts
+- `order.orderAttributes.meterOwnershipCredential`: Meter ownership credential (single object) proving ownership of the meter/CA, verified through OTP flow with Utility IdP
+  - The credential's `verificationUrl` points to the utility's verification endpoint
+- `fulfillment.fulfillmentAttributes.credentials[]`: Array of VCs proving program eligibility, DER certifications, etc.
+- `fulfillment.fulfillmentAttributes.existingEnrollments[]`: Array of existing enrollment credentials for conflict checking
+- Program Owner BPP verifies these credentials and checks for conflicts
 
 **Note**: Meter ownership credentials are placed in `orderAttributes` because they are meter-specific attributes tied to the order. Program eligibility and DER certification credentials remain in `fulfillmentAttributes.credentials[]` as they relate to fulfillment requirements.
 
 #### 18.1.4. Example: Prosumer with Solar and Battery
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/init-request-prosumer-solar-battery.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/init-request-prosumer-solar-battery.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1384,10 +1349,9 @@ The Program Owner BPP verifies these credentials and checks for conflicts with e
 }
 
 ```
-
 </details>
 
-### 18.2. On\_Init Response
+### 18.2. On_Init Response
 
 The BPP verifies the provided credentials and checks for conflicts with existing enrollments. The response includes:
 
@@ -1398,13 +1362,11 @@ The BPP verifies the provided credentials and checks for conflicts with existing
 
 The BPP returns either a rejection (with error) or proceeds to confirm. The `requiredCredentials` and `requiredConsents` inform the BAP/Portal what must be collected before the `confirm` request.
 
-#### 18.2.1. Example: OTP-Based On\_Init Response
+#### 18.2.1. Example: OTP-Based On_Init Response
 
 When using OTP authentication, the BPP returns an `nguid` (session token) and expiration time. The user must enter the OTP received via SMS.
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-init-response-otp.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/on-init-response-otp.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1461,22 +1423,18 @@ When using OTP authentication, the BPP returns an `nguid` (session token) and ex
 }
 
 ```
-
 </details>
 
 **Key Fields**:
+- `orderAttributes.userAuth.nguid`: Session token for OTP verification
+- `orderAttributes.userAuth.message`: Human-readable message about OTP delivery
+- `orderAttributes.userAuth.expiresAt`: When the OTP expires
 
-* `orderAttributes.userAuth.nguid`: Session token for OTP verification
-* `orderAttributes.userAuth.message`: Human-readable message about OTP delivery
-* `orderAttributes.userAuth.expiresAt`: When the OTP expires
-
-#### 18.2.2. Example: OAuth2/OIDC-Based On\_Init Response
+#### 18.2.2. Example: OAuth2/OIDC-Based On_Init Response
 
 When using OAuth2/OIDC, the BPP validates the token and returns the user's available meters for selection.
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-init-response-oauth2.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/on-init-response-oauth2.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1564,20 +1522,17 @@ When using OAuth2/OIDC, the BPP validates the token and returns the user's avail
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `orderAttributes.userAuth.verified`: Token validation result
-* `orderAttributes.userAuth.subject`: User identifier from token
-* `orderAttributes.meters[]`: List of meters belonging to the user for selection
+- `orderAttributes.userAuth.verified`: Token validation result
+- `orderAttributes.userAuth.subject`: User identifier from token
+- `orderAttributes.meters[]`: List of meters belonging to the user for selection
 
 #### 18.2.3. Example: Successful Verification, No Conflicts
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-init-response-success.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/on-init-response-success.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1676,14 +1631,12 @@ When using OAuth2/OIDC, the BPP validates the token and returns the user's avail
 }
 
 ```
-
 </details>
 
 #### 18.2.4. Example: Enrollment Conflict Detected
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-init-response-conflict.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/on-init-response-conflict.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1757,16 +1710,14 @@ When using OAuth2/OIDC, the BPP validates the token and returns the user's avail
 }
 
 ```
-
 </details>
 
 ### 18.3. Confirm Request
 
-The confirm request includes the desired enrollment start and end dates, along with any required consents.
+The confirm request includes the desired enrollment start and end dates, along with any required consents. 
 
 The consents should match the `requiredConsents` specified in the `on_init` response. Each consent indicates:
-
-* `type`: The type of consent (DATA\_COLLECTION, DER\_CONTROL, CROSS\_UTILITY\_SHARING)
+* `type`: The type of consent (DATA_COLLECTION, DER_CONTROL, CROSS_UTILITY_SHARING)
 * `granted`: Boolean indicating if consent was granted
 * `grantedAt`: Timestamp when consent was granted
 * `description`: Human-readable description of what the consent covers
@@ -1775,9 +1726,7 @@ The consents should match the `requiredConsents` specified in the `on_init` resp
 
 The confirm request includes the OTP for verification along with the selected meters.
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/confirm-request-otp.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/confirm-request-otp.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1844,20 +1793,16 @@ The confirm request includes the OTP for verification along with the selected me
 }
 
 ```
-
 </details>
 
 **Key Fields for OTP Flow**:
-
-* `orderAttributes.userAuth.otp`: The OTP entered by the user
-* `orderAttributes.userAuth.nguid`: Session token from on\_init response
-* `orderAttributes.meters[]`: Selected meters for enrollment
+- `orderAttributes.userAuth.otp`: The OTP entered by the user
+- `orderAttributes.userAuth.nguid`: Session token from on_init response
+- `orderAttributes.meters[]`: Selected meters for enrollment
 
 #### 18.3.2. Example: OAuth2/OIDC-Based Confirm Request
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/confirm-request-oauth2.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/confirm-request-oauth2.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1920,19 +1865,16 @@ The confirm request includes the OTP for verification along with the selected me
 }
 
 ```
-
 </details>
 
 **Key Fields for OAuth2 Flow**:
-
-* `orderAttributes.userAuth.accessToken`: OAuth2 access token (for re-validation)
-* `orderAttributes.meters[]`: Selected meters from the on\_init response
+- `orderAttributes.userAuth.accessToken`: OAuth2 access token (for re-validation)
+- `orderAttributes.meters[]`: Selected meters from the on_init response
 
 #### 18.3.3. Example: Confirm with Enrollment Dates
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/confirm-request.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/confirm-request.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -1997,18 +1939,15 @@ The confirm request includes the OTP for verification along with the selected me
 }
 
 ```
-
 </details>
 
-### 18.4. On\_Confirm Response
+### 18.4. On_Confirm Response
 
 The Program Owner BPP returns a signed Program Enrollment Credential as a Verifiable Credential. **The credential is placed in `fulfillmentAttributes.credential`**, not in `orderAttributes`. The `orderAttributes` contains enrollment metadata (enrollmentId, status, dates, audit logs).
 
-#### 18.4.1. Example: OTP-Based On\_Confirm Response (Success)
+#### 18.4.1. Example: OTP-Based On_Confirm Response (Success)
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-confirm-response-otp.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/on-confirm-response-otp.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2098,20 +2037,16 @@ The Program Owner BPP returns a signed Program Enrollment Credential as a Verifi
 }
 
 ```
-
 </details>
 
 **Key Fields**:
+- `orderAttributes.userAuth.verified`: Indicates OTP was verified successfully
+- `orderAttributes.credential`: The issued Program Enrollment Credential
+- `orderAttributes.p2pdetails`: Additional utility-specific details (additionalAttributes)
 
-* `orderAttributes.userAuth.verified`: Indicates OTP was verified successfully
-* `orderAttributes.credential`: The issued Program Enrollment Credential
-* `orderAttributes.p2pdetails`: Additional utility-specific details (additionalAttributes)
+#### 18.4.2. Example: OAuth2/OIDC-Based On_Confirm Response (Success)
 
-#### 18.4.2. Example: OAuth2/OIDC-Based On\_Confirm Response (Success)
-
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-confirm-response-oauth2.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/on-confirm-response-oauth2.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2202,16 +2137,13 @@ The Program Owner BPP returns a signed Program Enrollment Credential as a Verifi
 }
 
 ```
-
 </details>
 
 #### 18.4.3. Example: No Meter Specified Error
 
 When authentication succeeds but no meter is selected, the BPP returns available meters for the user to choose from.
 
-<details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-confirm-response-no-meter.json">Example json :rocket:</a></summary>
+<details><summary><a href="../../../../examples/enrollment/v2/on-confirm-response-no-meter.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2280,19 +2212,16 @@ When authentication succeeds but no meter is selected, the BPP returns available
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `error.code`: `BIZ_NO_METER_SPECIFIED`
-* `error.details.availableMeters[]`: List of meters the user can select from
+- `error.code`: `BIZ_NO_METER_SPECIFIED`
+- `error.details.availableMeters[]`: List of meters the user can select from
 
 #### 18.4.4. Example: Successful Enrollment with Credential
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-confirm-response-success.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/on-confirm-response-success.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2364,24 +2293,21 @@ When authentication succeeds but no meter is selected, the BPP returns available
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `orderAttributes.startDate`: When enrollment becomes active
-* `orderAttributes.endDate`: When enrollment expires
-* `orderAttributes.credential`: Signed Verifiable Credential proving enrollment
-* `orderAttributes.loggedAt`: Timestamp when enrollment was logged
-* `orderAttributes.logReference`: Reference to enrollment log entry
+- `orderAttributes.startDate`: When enrollment becomes active
+- `orderAttributes.endDate`: When enrollment expires
+- `orderAttributes.credential`: Signed Verifiable Credential proving enrollment
+- `orderAttributes.loggedAt`: Timestamp when enrollment was logged
+- `orderAttributes.logReference`: Reference to enrollment log entry
 
 ### 18.5. Error Response Example
 
 #### 18.5.1. Example: Credential Verification Failed
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-init-response-error.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/on-init-response-error.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2436,7 +2362,6 @@ When authentication succeeds but no meter is selected, the BPP returns available
 }
 
 ```
-
 </details>
 
 **Note**: For vocabulary definitions of new terms and slotted attributes, see `outputs_onboarding_guide/Vocabulary_Definitions.md`.
@@ -2448,8 +2373,7 @@ Users can revoke consent at any time after enrollment. The revocation uses the B
 #### 18.6.1. Example: Consent Revocation Request
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/update-request-consent-revocation.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/update-request-consent-revocation.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2500,21 +2424,18 @@ Users can revoke consent at any time after enrollment. The revocation uses the B
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `orderAttributes.updateType`: Set to `CONSENT_REVOCATION`
-* `orderAttributes.consentRevocation.consentCredentialId`: ID of the consent VC to revoke
-* `orderAttributes.consentRevocation.consentType`: Type of consent being revoked
-* `orderAttributes.consentRevocation.reason`: Reason for revocation
+- `orderAttributes.updateType`: Set to `CONSENT_REVOCATION`
+- `orderAttributes.consentRevocation.consentCredentialId`: ID of the consent VC to revoke
+- `orderAttributes.consentRevocation.consentType`: Type of consent being revoked
+- `orderAttributes.consentRevocation.reason`: Reason for revocation
 
 #### 18.6.2. Example: Consent Revocation Response
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-update-response-consent-revocation.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/on-update-response-consent-revocation.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2575,15 +2496,13 @@ Users can revoke consent at any time after enrollment. The revocation uses the B
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `orderAttributes.consentRevocation.status`: `REVOKED` when processed
-* `orderAttributes.consentRevocation.statusListUrl`: URL of the W3C VC status list
-* `orderAttributes.consentRevocation.statusListIndex`: Index in the status list
-* Verifiers check this status list to verify if consent is still valid
+- `orderAttributes.consentRevocation.status`: `REVOKED` when processed
+- `orderAttributes.consentRevocation.statusListUrl`: URL of the W3C VC status list
+- `orderAttributes.consentRevocation.statusListIndex`: Index in the status list
+- Verifiers check this status list to verify if consent is still valid
 
 ### 18.7. Unenrollment
 
@@ -2592,8 +2511,7 @@ Users can unenroll from a program at any time. Unenrollment revokes the enrollme
 #### 18.7.1. Example: Unenrollment Request
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/update-request-unenrollment.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/update-request-unenrollment.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2643,21 +2561,18 @@ Users can unenroll from a program at any time. Unenrollment revokes the enrollme
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `orderAttributes.updateType`: Set to `UNENROLLMENT`
-* `orderAttributes.unenrollment.enrollmentId`: ID of the enrollment to cancel
-* `orderAttributes.unenrollment.revokeAllConsents`: Whether to revoke all associated consents
-* `orderAttributes.unenrollment.effectiveDate`: When the unenrollment becomes effective
+- `orderAttributes.updateType`: Set to `UNENROLLMENT`
+- `orderAttributes.unenrollment.enrollmentId`: ID of the enrollment to cancel
+- `orderAttributes.unenrollment.revokeAllConsents`: Whether to revoke all associated consents
+- `orderAttributes.unenrollment.effectiveDate`: When the unenrollment becomes effective
 
 #### 18.7.2. Example: Unenrollment Response
 
 <details>
-
-<summary><a href="https://github.com/nirmal-inc/docs-test/blob/main/docs/examples/enrollment/v2/on-update-response-unenrollment.json">Example json :rocket:</a></summary>
+<summary><a href="../../../../examples/enrollment/v2/on-update-response-unenrollment.json">Example json :rocket:</a></summary>
 
 ```json
 {
@@ -2731,24 +2646,21 @@ Users can unenroll from a program at any time. Unenrollment revokes the enrollme
 }
 
 ```
-
 </details>
 
 **Key Fields**:
-
-* `order.status`: Set to `CANCELLED`
-* `orderAttributes.status`: Set to `CANCELLED`
-* `orderAttributes.unenrollment.enrollmentCredentialStatus`: Status list details for enrollment VC revocation
-* `orderAttributes.unenrollment.consentsRevoked[]`: Array of revoked consent credentials with their status list details
-* All credentials are added to W3C VC status lists for verification
+- `order.status`: Set to `CANCELLED`
+- `orderAttributes.status`: Set to `CANCELLED`
+- `orderAttributes.unenrollment.enrollmentCredentialStatus`: Status list details for enrollment VC revocation
+- `orderAttributes.unenrollment.consentsRevoked[]`: Array of revoked consent credentials with their status list details
+- All credentials are added to W3C VC status lists for verification
 
 **Revocation Mechanism**:
+- BPP updates W3C VC status lists (BitstringStatusList) to mark credentials as revoked
+- Verifiers check status lists before accepting credentials
+- Status lists use bitstrings for efficient and privacy-preserving revocation checks
 
-* BPP updates W3C VC status lists (BitstringStatusList) to mark credentials as revoked
-* Verifiers check status lists before accepting credentials
-* Status lists use bitstrings for efficient and privacy-preserving revocation checks
-
-***
+---
 
 ## 19. Appendix B – Multi-Utility Interaction Patterns
 
@@ -2799,29 +2711,27 @@ sequenceDiagram
 
 **Note:** The exact multi-utility flow may vary based on implementation. Some utilities may support OAuth2/OIDC tokens instead of OTP. The BPP is responsible for orchestrating authentication with each utility's IdP.
 
-***
+---
 
 ## 20. Appendix C – Error Handling Patterns
 
 Error codes use a three-letter prefix to indicate the error layer:
 
-| Prefix | Layer    | Description                           |
-| ------ | -------- | ------------------------------------- |
+| Prefix | Layer | Description |
+|--------|-------|-------------|
 | `SEC_` | Security | Authentication/authorization failures |
-| `BIZ_` | Business | Business rule violations              |
-| `NET_` | Network  | Communication/connectivity issues     |
-| `SYS_` | System   | Internal system errors                |
+| `BIZ_` | Business | Business rule violations |
+| `NET_` | Network | Communication/connectivity issues |
+| `SYS_` | System | Internal system errors |
 
-**Authentication Errors (SEC\_):**
-
+**Authentication Errors (SEC_):**
 * `SEC_OTP_INVALID` - OTP verification failed
 * `SEC_OTP_EXPIRED` - OTP/nguid has expired
 * `SEC_TOKEN_INVALID` - OAuth2/OIDC token validation failed
 * `SEC_TOKEN_EXPIRED` - OAuth2/OIDC token has expired
 * `SEC_CREDENTIAL_VERIFICATION_FAILED` - Verifiable Credential validation failed
 
-**Business Errors (BIZ\_):**
-
+**Business Errors (BIZ_):**
 * `BIZ_NO_METER_SPECIFIED` - No meter provided in confirm request
 * `BIZ_METER_NOT_FOUND` - Specified meter not found in utility system
 * `BIZ_ENROLLMENT_CONFLICT` - Meter already enrolled in conflicting program

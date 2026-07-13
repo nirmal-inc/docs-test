@@ -250,7 +250,7 @@ The utility publishes a flex catalog containing:
                   }
                 ],
                 "policy": {
-                  "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+                  "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
                   "queryPath": "data.deg.contracts.demand_flex"
                 }
               },
@@ -404,7 +404,7 @@ The CDS returns matching catalogs. The offer carries the full `contractTerms` an
                 "@type": "DEGContract",
                 "roles": [{"role": "buyer"}, {"role": "seller"}],
                 "policy": {
-                  "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+                  "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
                   "queryPath": "data.deg.contracts.demand_flex"
                 }
               },
@@ -552,7 +552,7 @@ The aggregator selects an offer with a desired quantity. The `contractTerms` fro
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -678,7 +678,7 @@ The BPP returns a DRAFT contract. The `contractAttributes` carries the `DEGContr
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -818,7 +818,7 @@ The aggregator provides their identity. The seller role in `inputs` is now fille
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -957,7 +957,7 @@ The BPP acknowledges the seller and populates the initial set of participating m
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -1097,7 +1097,7 @@ The aggregator confirms the contract. Same structure as init.
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -1237,7 +1237,7 @@ The BPP activates the contract. Status changes to `ACTIVE`. The contract is now 
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -1372,7 +1372,7 @@ The aggregator updates the participating meters list before an event. The seller
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -1536,7 +1536,7 @@ Before the event, the utility publishes baseline load per meter. The `DemandFlex
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -1703,7 +1703,7 @@ After the event, the utility publishes actual load per meter alongside baselines
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         }
       }
@@ -1870,7 +1870,7 @@ The rego policy is evaluated against the actuals payload. Revenue flows are comp
           }
         ],
         "policy": {
-          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand_flex_revenue.rego",
+          "url": "https://raw.githubusercontent.com/beckn/DEG/refs/heads/main/specification/policies/demand-flex-contractpolicy.rego",
           "queryPath": "data.deg.contracts.demand_flex"
         },
         "revenueFlows": [
@@ -1952,7 +1952,7 @@ Attached to `Performance.performanceAttributes` in `on_status` callbacks.
 
 ## 7. Policy and Settlement
 
-The demand-flex rego policy ([demand_flex_revenue.rego](../../../../specification/policies/demand_flex_revenue.rego)) is a pure function:
+The demand-flex rego policy ([demand-flex-contractpolicy.rego](../../../../specification/policies/demand-flex-contractpolicy.rego)) is a pure function:
 
 **Inputs** (from the contract payload):
 - `contractAttributes.roles[]` — buyer / seller
@@ -1972,7 +1972,7 @@ The demand-flex rego policy ([demand_flex_revenue.rego](../../../../specificatio
 
 ```bash
 # Run OPA tests
-cd specification/policies && opa test demand_flex_revenue.rego demand_flex_revenue_test.rego -v
+cd specification/policies && opa test demand-flex-contractpolicy.rego test/demand-flex-contractpolicy_test.rego -v
 
 # Evaluate against an example
 python3 scripts/evaluate_demand_flex_settlement.py examples/demand-flex/v2/on-status-response-settled.json
@@ -1985,7 +1985,7 @@ python3 scripts/evaluate_demand_flex_settlement.py \
 
 ### In the onix pipeline
 
-The `settlementflows` step plugin runs first in the BPP Caller pipeline on `on_status` messages. It reads the policy URL from `contractAttributes.policy`, fetches and caches the rego at runtime, evaluates it, and injects `revenueFlows` into the message body before schema validation and signing.
+The `contractpolicyenforcer` step plugin runs first in the BPP Caller pipeline on `on_status` messages. It reads the policy URL from `contractAttributes.policy`, fetches and caches the rego at runtime, evaluates it, and injects `revenueFlows` into the message body before schema validation and signing.
 
 ## 8. Implementation Notes
 
@@ -2003,7 +2003,7 @@ The `settlementflows` step plugin runs first in the BPP Caller pipeline on `on_s
 - At `/on_select`, promote `contractTerms` to `contractAttributes` and bind buyer role
 - At `/on_init`, bind seller role in `contractAttributes.roles`
 - Send baselines via `on_status` before the event, actuals after
-- The `settlementflows` step computes and injects revenue flows automatically on `on_status`
+- The `contractpolicyenforcer` step computes and injects revenue flows automatically on `on_status`
 - All quantity fields use `beckn:Quantity` with `@type: "Quantity"` and `unitCode`/`unitQuantity`
 
 ## 9. Devkit
@@ -2022,7 +2022,7 @@ docker compose -f devkits/demand-flex/install/docker-compose-demand-flex.yml up 
 | Component | Port | Description |
 |:----------|:-----|:------------|
 | onix-bap | 8081 | BAP adapter (Aggregator) |
-| onix-bpp | 8082 | BPP adapter (Utility) with settlementflows step |
+| onix-bpp | 8082 | BPP adapter (Utility) with contractpolicyenforcer step |
 | sandbox-bap | 3001 | BAP sandbox |
 | sandbox-bpp | 3002 | BPP sandbox |
 | redis | 6379 | Cache |
